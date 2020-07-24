@@ -1,0 +1,80 @@
+package com.muaz.vendingmachine.service;
+
+import com.muaz.vendingmachine.entity.Order;
+import com.muaz.vendingmachine.entity.PaymentRequest;
+import com.muaz.vendingmachine.entity.PaymentResponse;
+import com.muaz.vendingmachine.entity.Product;
+import com.muaz.vendingmachine.enums.PaymentType;
+import com.muaz.vendingmachine.exception.NoSuchResourceFoundException;
+import com.muaz.vendingmachine.repository.PaymentResponseRepository;
+import com.muaz.vendingmachine.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+
+import static com.muaz.vendingmachine.enums.PaymentLogStatus.ORDER_FAIL;
+import static com.muaz.vendingmachine.enums.PaymentLogStatus.ORDER_START;
+
+@Service
+@Slf4j
+public class OrderService {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private PaymentResponseRepository paymentResponseRepository;
+
+    public PaymentResponse doOrder(PaymentRequest paymentRequest, String orderNumber) {
+        Order order = paymentRequest.getOrder();
+        Product product = productRepository.findByProductNo(order.getProductNo());
+
+        log.info("status: {}, orderNumber: {} ", ORDER_START, orderNumber);
+
+        int remainingCount = product.getCount() - order.getCount();
+        PaymentResponse paymentResponse = createPaymentResponse(paymentRequest, product);
+
+        if (remainingCount < 0) {
+            log.info("status: {}, orderNumber: {} ", ORDER_FAIL, orderNumber);
+            throw new NoSuchResourceFoundException("HIGH COUNT REQUESTED");
+        }
+        if (isNotAffordable(paymentResponse)) {
+            log.info("status: {}, orderNumber: {} ", ORDER_FAIL, orderNumber);
+            throw new NoSuchResourceFoundException("LESS MONEY");
+        }
+        productUpdate(product, remainingCount);
+        return paymentResponse;
+    }
+
+    private void productUpdate(Product product, int remainingCount) {
+        product.setCount(remainingCount);
+        productRepository.save(product);
+    }
+
+    private boolean isNotAffordable(PaymentResponse paymentResponse) {
+        if (isCash(paymentResponse.getPaymentType())) {
+            return paymentResponse.getRemainingPrice().compareTo(BigDecimal.ZERO) == -1;
+        }
+        return false;
+
+    }
+
+    private PaymentResponse createPaymentResponse(PaymentRequest paymentRequest, Product product) {
+        PaymentResponse paymentResponse = new PaymentResponse();
+        paymentResponse.setProductName(product.getName());
+        paymentResponse.setCount(paymentRequest.getOrder().getCount());
+        paymentResponse.setPaymentType(paymentRequest.getPaymentType());
+        paymentResponse.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(paymentRequest.getOrder().getCount())));
+
+        if (isCash(paymentRequest.getPaymentType())) {
+            paymentResponse.setRemainingPrice(paymentRequest.getMoney().subtract(paymentResponse.getTotalPrice()));
+        }
+        return paymentResponseRepository.save(paymentResponse);
+    }
+
+    private boolean isCash(PaymentType paymentType) {
+        return paymentType == PaymentType.BANKNOTE || paymentType == PaymentType.COIN;
+    }
+}
