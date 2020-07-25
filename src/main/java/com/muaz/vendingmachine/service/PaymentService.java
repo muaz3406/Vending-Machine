@@ -37,7 +37,7 @@ public class PaymentService {
         }
 
         String offerNumber = offer.getOfferNumber();
-        PaymentResponse paymentResponse = offerService.doOrder(paymentRequest, offerNumber);
+        PaymentResponse paymentResponse = offerService.doOffer(paymentRequest, offerNumber);
 
         if (isCreditCard(paymentRequest)) {
             creditCardPaymentService.doPay(paymentRequest, offerNumber);

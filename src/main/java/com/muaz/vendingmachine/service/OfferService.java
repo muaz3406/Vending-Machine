@@ -29,7 +29,7 @@ public class OfferService {
     @Autowired
     private PaymentResponseRepository paymentResponseRepository;
 
-    public PaymentResponse doOrder(PaymentRequest paymentRequest, String offerNumber) {
+    public PaymentResponse doOffer(PaymentRequest paymentRequest, String offerNumber) {
         Offer offer = paymentRequest.getOffer();
         Product product = productRepository.findByProductNo(offer.getProductNo());
 
