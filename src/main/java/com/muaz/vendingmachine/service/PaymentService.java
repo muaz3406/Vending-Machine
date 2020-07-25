@@ -29,7 +29,7 @@ public class PaymentService {
     public PaymentResponse doPay(PaymentRequest paymentRequest) {
         paymentRequestRepository.save(paymentRequest);
 
-        String orderNumber = paymentRequest.getOrder().getOrderNumber();
+        String orderNumber = paymentRequest.getOffer().getOrderNumber();
         PaymentResponse paymentResponse = orderService.doOrder(paymentRequest, orderNumber);
 
         if (isCreditCard(paymentRequest)) {

@@ -5,12 +5,12 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-@Entity(name = "Order")
-@Table(name = "order")
-public class Order {
+@Entity
+public class Offer {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
     @Column
@@ -25,7 +25,6 @@ public class Order {
     @Column
     private int sugar;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "paymentRequest_id")
+    @OneToOne(mappedBy = "offer")
     private PaymentRequest paymentRequest;
 }

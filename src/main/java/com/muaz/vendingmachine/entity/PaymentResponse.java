@@ -8,10 +8,12 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
+@Table(name = "paymentResponse")
 public class PaymentResponse {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
     @Column

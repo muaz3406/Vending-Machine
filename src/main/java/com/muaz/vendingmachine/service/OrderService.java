@@ -1,6 +1,6 @@
 package com.muaz.vendingmachine.service;
 
-import com.muaz.vendingmachine.entity.Order;
+import com.muaz.vendingmachine.entity.Offer;
 import com.muaz.vendingmachine.entity.PaymentRequest;
 import com.muaz.vendingmachine.entity.PaymentResponse;
 import com.muaz.vendingmachine.entity.Product;
@@ -28,12 +28,12 @@ public class OrderService {
     private PaymentResponseRepository paymentResponseRepository;
 
     public PaymentResponse doOrder(PaymentRequest paymentRequest, String orderNumber) {
-        Order order = paymentRequest.getOrder();
-        Product product = productRepository.findByProductNo(order.getProductNo());
+        Offer offer = paymentRequest.getOffer();
+        Product product = productRepository.findByProductNo(offer.getProductNo());
 
         log.info("status: {}, orderNumber: {} ", ORDER_START, orderNumber);
 
-        int remainingCount = product.getCount() - order.getCount();
+        int remainingCount = product.getCount() - offer.getCount();
         PaymentResponse paymentResponse = createPaymentResponse(paymentRequest, product);
 
         if (remainingCount < 0) {
@@ -64,9 +64,9 @@ public class OrderService {
     private PaymentResponse createPaymentResponse(PaymentRequest paymentRequest, Product product) {
         PaymentResponse paymentResponse = new PaymentResponse();
         paymentResponse.setProductName(product.getName());
-        paymentResponse.setCount(paymentRequest.getOrder().getCount());
+        paymentResponse.setCount(paymentRequest.getOffer().getCount());
         paymentResponse.setPaymentType(paymentRequest.getPaymentType());
-        paymentResponse.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(paymentRequest.getOrder().getCount())));
+        paymentResponse.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(paymentRequest.getOffer().getCount())));
 
         if (isCash(paymentRequest.getPaymentType())) {
             paymentResponse.setRemainingPrice(paymentRequest.getMoney().subtract(paymentResponse.getTotalPrice()));
