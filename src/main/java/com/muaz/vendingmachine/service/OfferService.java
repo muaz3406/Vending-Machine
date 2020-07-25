@@ -16,13 +16,15 @@ import java.math.BigDecimal;
 
 import static com.muaz.vendingmachine.enums.PaymentLogStatus.OFFER_FAIL;
 import static com.muaz.vendingmachine.enums.PaymentLogStatus.OFFER_START;
+import static com.muaz.vendingmachine.utils.PaymentUtil.isCash;
 
 @Service
 @Slf4j
 public class OfferService {
 
-    public static final int REMAINING_LIMIT = 0;
-    public static final int SMALLER = -1;
+    private static final int REMAINING_LIMIT = 0;
+    private static final int SMALLER = -1;
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -64,19 +66,25 @@ public class OfferService {
     }
 
     private PaymentResponse createPaymentResponse(PaymentRequest paymentRequest, Product product) {
-        PaymentResponse paymentResponse = new PaymentResponse();
-        paymentResponse.setProductName(product.getName());
-        paymentResponse.setCount(paymentRequest.getOffer().getCount());
-        paymentResponse.setPaymentType(paymentRequest.getPaymentType());
-        paymentResponse.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(paymentRequest.getOffer().getCount())));
+        PaymentType paymentType = paymentRequest.getPaymentType();
+        BigDecimal totalPrice = calculateTotalPrice(paymentRequest,product);
 
-        if (isCash(paymentRequest.getPaymentType())) {
-            paymentResponse.setRemainingPrice(paymentRequest.getMoney().subtract(paymentResponse.getTotalPrice()));
-        }
+        PaymentResponse paymentResponse = PaymentResponse.builder()
+                .count(paymentRequest.getOffer().getCount())
+                .paymentType(paymentType)
+                .productName(product.getName())
+                .totalPrice(totalPrice)
+                .remainingPrice(isCash(paymentType) ? calculateRemainingPrice(paymentRequest, totalPrice) : null)
+                .build();
+
         return paymentResponseRepository.save(paymentResponse);
     }
 
-    private boolean isCash(PaymentType paymentType) {
-        return paymentType == PaymentType.BANKNOTE || paymentType == PaymentType.COIN;
+    private BigDecimal calculateRemainingPrice(PaymentRequest paymentRequest, BigDecimal totalPrice) {
+        return paymentRequest.getMoney().subtract(totalPrice);
+    }
+
+    private BigDecimal calculateTotalPrice(PaymentRequest paymentRequest, Product product) {
+        return product.getPrice().multiply(BigDecimal.valueOf(paymentRequest.getOffer().getCount()));
     }
 }

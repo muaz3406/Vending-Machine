@@ -3,12 +3,13 @@ package com.muaz.vendingmachine.service;
 import com.muaz.vendingmachine.entity.Offer;
 import com.muaz.vendingmachine.entity.PaymentRequest;
 import com.muaz.vendingmachine.entity.PaymentResponse;
-import com.muaz.vendingmachine.enums.PaymentType;
 import com.muaz.vendingmachine.exception.BadResourceRequestException;
 import com.muaz.vendingmachine.repository.PaymentRequestRepository;
 import com.muaz.vendingmachine.repository.PaymentResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.muaz.vendingmachine.utils.PaymentUtil.isCash;
 
 @Service
 public class PaymentService {
@@ -39,16 +40,11 @@ public class PaymentService {
         String offerNumber = offer.getOfferNumber();
         PaymentResponse paymentResponse = offerService.doOffer(paymentRequest, offerNumber);
 
-        if (isCreditCard(paymentRequest)) {
+        if (isCash(paymentRequest.getPaymentType())) {
             creditCardPaymentService.doPay(paymentRequest, offerNumber);
         } else {
             cashPaymentService.doPay(paymentResponse, offerNumber);
         }
         return paymentResponse;
-    }
-
-    private boolean isCreditCard(PaymentRequest paymentRequest) {
-        PaymentType paymentType = paymentRequest.getPaymentType();
-        return paymentType == PaymentType.REMOTE_CARD || paymentType == PaymentType.CARD;
     }
 }

@@ -1,11 +1,13 @@
 package com.muaz.vendingmachine.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@Builder
 public class Offer {
 
     @Id
@@ -23,7 +25,7 @@ public class Offer {
     private int count;
 
     @Column
-    private int sugar;
+    private Integer sugar;
 
     @OneToOne(mappedBy = "offer")
     private PaymentRequest paymentRequest;

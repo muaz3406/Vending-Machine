@@ -1,6 +1,7 @@
 package com.muaz.vendingmachine.entity;
 
 import com.muaz.vendingmachine.enums.ProductType;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
+@Builder
 @Table(name = "product")
 public class Product {
 

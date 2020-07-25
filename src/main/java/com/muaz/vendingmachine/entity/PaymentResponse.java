@@ -1,12 +1,14 @@
 package com.muaz.vendingmachine.entity;
 
 import com.muaz.vendingmachine.enums.PaymentType;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Data
+@Builder
 @Entity
 @Table(name = "paymentResponse")
 public class PaymentResponse {
