@@ -1,8 +1,10 @@
 package com.muaz.vendingmachine.service;
 
+import com.muaz.vendingmachine.entity.Offer;
 import com.muaz.vendingmachine.entity.PaymentRequest;
 import com.muaz.vendingmachine.entity.PaymentResponse;
 import com.muaz.vendingmachine.enums.PaymentType;
+import com.muaz.vendingmachine.exception.BadResourceRequestException;
 import com.muaz.vendingmachine.repository.PaymentRequestRepository;
 import com.muaz.vendingmachine.repository.PaymentResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,17 @@ public class PaymentService {
     public PaymentResponse doPay(PaymentRequest paymentRequest) {
         paymentRequestRepository.save(paymentRequest);
 
-        String orderNumber = paymentRequest.getOffer().getOrderNumber();
-        PaymentResponse paymentResponse = orderService.doOrder(paymentRequest, orderNumber);
+        Offer offer = paymentRequest.getOffer();
+        if (offer == null) {
+            throw new BadResourceRequestException("NO FOUND OFFER");
+        }
+        String offerNumber = offer.getOfferNumber();
+        PaymentResponse paymentResponse = orderService.doOrder(paymentRequest, offerNumber);
 
         if (isCreditCard(paymentRequest)) {
-            creditCardPaymentService.doPay(paymentRequest, orderNumber);
+            creditCardPaymentService.doPay(paymentRequest, offerNumber);
         } else {
-            cashPaymentService.doPay(paymentResponse, orderNumber);
+            cashPaymentService.doPay(paymentResponse, offerNumber);
         }
         return paymentResponse;
     }

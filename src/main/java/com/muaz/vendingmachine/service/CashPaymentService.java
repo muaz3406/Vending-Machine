@@ -10,7 +10,7 @@ import static com.muaz.vendingmachine.enums.PaymentLogStatus.CASH_PAY_SUCCESS;
 @Slf4j
 public class CashPaymentService {
 
-    public void doPay(PaymentResponse paymentResponse, String orderNumber) {
-        log.info("status : {} orderNumber: {} ", CASH_PAY_SUCCESS, orderNumber);
+    public void doPay(PaymentResponse paymentResponse, String offerNumber) {
+        log.info("status : {} orderNumber: {} ", CASH_PAY_SUCCESS, offerNumber);
     }
 }

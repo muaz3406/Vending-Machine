@@ -14,7 +14,7 @@ public class Offer {
     private Long id;
 
     @Column
-    private String orderNumber;
+    private String offerNumber;
 
     @Column
     private int productNo;

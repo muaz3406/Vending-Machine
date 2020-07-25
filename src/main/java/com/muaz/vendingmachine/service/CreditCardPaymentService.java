@@ -12,13 +12,13 @@ import static com.muaz.vendingmachine.enums.PaymentLogStatus.*;
 @Slf4j
 public class CreditCardPaymentService {
 
-    public void doPay(PaymentRequest paymentRequest, String orderNumber) {
-        log.info("status : {} orderNumber: {} ", CARD_PAY_START, orderNumber);
+    public void doPay(PaymentRequest paymentRequest, String offerNumber) {
+        log.info("status : {} orderNumber: {} ", CARD_PAY_START, offerNumber);
 
         if (StringUtils.isEmpty(paymentRequest.getCardInfo())) {
-            log.info("status : {} orderNumber: {} ", CARD_PAY_FAIL, orderNumber);
+            log.info("status : {} orderNumber: {} ", CARD_PAY_FAIL, offerNumber);
             throw new BadResourceRequestException("INVALID CARD");
         }
-        log.info("status : {} orderNumber: {} ", CARD_PAY_SUCCESS, orderNumber);
+        log.info("status : {} orderNumber: {} ", CARD_PAY_SUCCESS, offerNumber);
     }
 }

@@ -27,21 +27,21 @@ public class OrderService {
     @Autowired
     private PaymentResponseRepository paymentResponseRepository;
 
-    public PaymentResponse doOrder(PaymentRequest paymentRequest, String orderNumber) {
+    public PaymentResponse doOrder(PaymentRequest paymentRequest, String offerNumber) {
         Offer offer = paymentRequest.getOffer();
         Product product = productRepository.findByProductNo(offer.getProductNo());
 
-        log.info("status: {}, orderNumber: {} ", ORDER_START, orderNumber);
+        log.info("status: {}, orderNumber: {} ", ORDER_START, offerNumber);
 
         int remainingCount = product.getCount() - offer.getCount();
         PaymentResponse paymentResponse = createPaymentResponse(paymentRequest, product);
 
         if (remainingCount < 0) {
-            log.info("status: {}, orderNumber: {} ", ORDER_FAIL, orderNumber);
+            log.info("status: {}, orderNumber: {} ", ORDER_FAIL, offerNumber);
             throw new NoSuchResourceFoundException("HIGH COUNT REQUESTED");
         }
         if (isNotAffordable(paymentResponse)) {
-            log.info("status: {}, orderNumber: {} ", ORDER_FAIL, orderNumber);
+            log.info("status: {}, orderNumber: {} ", ORDER_FAIL, offerNumber);
             throw new NoSuchResourceFoundException("LESS MONEY");
         }
         productUpdate(product, remainingCount);
