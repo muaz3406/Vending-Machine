@@ -16,6 +16,7 @@ public class ProductService {
     public List<Product> uploadProducts(List<Product> productList) {
         return (List<Product>) productRepository.saveAll(productList);
     }
+
     public List<Product> getAllProducts() {
         return (List<Product>) productRepository.findAll();
     }
