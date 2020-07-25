@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-import static com.muaz.vendingmachine.enums.PaymentLogStatus.ORDER_FAIL;
-import static com.muaz.vendingmachine.enums.PaymentLogStatus.ORDER_START;
+import static com.muaz.vendingmachine.enums.PaymentLogStatus.OFFER_FAIL;
+import static com.muaz.vendingmachine.enums.PaymentLogStatus.OFFER_START;
 
 @Service
 @Slf4j
-public class OrderService {
+public class OfferService {
 
     @Autowired
     private ProductRepository productRepository;
@@ -31,17 +31,17 @@ public class OrderService {
         Offer offer = paymentRequest.getOffer();
         Product product = productRepository.findByProductNo(offer.getProductNo());
 
-        log.info("status: {}, orderNumber: {} ", ORDER_START, offerNumber);
+        log.info("status: {}, orderNumber: {} ", OFFER_START, offerNumber);
 
         int remainingCount = product.getCount() - offer.getCount();
         PaymentResponse paymentResponse = createPaymentResponse(paymentRequest, product);
 
         if (remainingCount < 0) {
-            log.info("status: {}, orderNumber: {} ", ORDER_FAIL, offerNumber);
+            log.info("status: {}, orderNumber: {} ", OFFER_FAIL, offerNumber);
             throw new NoSuchResourceFoundException("HIGH COUNT REQUESTED");
         }
         if (isNotAffordable(paymentResponse)) {
-            log.info("status: {}, orderNumber: {} ", ORDER_FAIL, offerNumber);
+            log.info("status: {}, orderNumber: {} ", OFFER_FAIL, offerNumber);
             throw new NoSuchResourceFoundException("LESS MONEY");
         }
         productUpdate(product, remainingCount);

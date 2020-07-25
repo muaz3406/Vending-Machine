@@ -1,8 +1,8 @@
 package com.muaz.vendingmachine.enums;
 
 public enum PaymentLogStatus {
-    ORDER_START,
-    ORDER_FAIL,
+    OFFER_START,
+    OFFER_FAIL,
 
     CASH_PAY_START,
     CASH_PAY_FAIL,

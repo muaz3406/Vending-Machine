@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class PaymentService {
 
     @Autowired
-    private OrderService orderService;
+    private OfferService offerService;
 
     @Autowired
     private CashPaymentService cashPaymentService;
@@ -36,7 +36,7 @@ public class PaymentService {
             throw new BadResourceRequestException("NO FOUND OFFER");
         }
         String offerNumber = offer.getOfferNumber();
-        PaymentResponse paymentResponse = orderService.doOrder(paymentRequest, offerNumber);
+        PaymentResponse paymentResponse = offerService.doOrder(paymentRequest, offerNumber);
 
         if (isCreditCard(paymentRequest)) {
             creditCardPaymentService.doPay(paymentRequest, offerNumber);
