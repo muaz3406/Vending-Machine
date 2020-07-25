@@ -5,7 +5,6 @@ import com.muaz.vendingmachine.entity.PaymentRequest;
 import com.muaz.vendingmachine.entity.PaymentResponse;
 import com.muaz.vendingmachine.exception.BadResourceRequestException;
 import com.muaz.vendingmachine.repository.PaymentRequestRepository;
-import com.muaz.vendingmachine.repository.PaymentResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +23,6 @@ public class PaymentService {
     private CreditCardPaymentService creditCardPaymentService;
 
     @Autowired
-    private PaymentResponseRepository paymentResponseRepository;
-
-    @Autowired
     private PaymentRequestRepository paymentRequestRepository;
 
     public PaymentResponse doPay(PaymentRequest paymentRequest) {
@@ -41,9 +37,9 @@ public class PaymentService {
         PaymentResponse paymentResponse = offerService.doOffer(paymentRequest, offerNumber);
 
         if (isCash(paymentRequest.getPaymentType())) {
-            creditCardPaymentService.doPay(paymentRequest, offerNumber);
-        } else {
             cashPaymentService.doPay(paymentResponse, offerNumber);
+        } else {
+            creditCardPaymentService.doPay(paymentRequest, offerNumber);
         }
         return paymentResponse;
     }
