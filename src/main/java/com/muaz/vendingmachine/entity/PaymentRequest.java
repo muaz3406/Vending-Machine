@@ -19,7 +19,7 @@ public class PaymentRequest {
     private Long id;
 
     @Column
-    private String CardInfo;
+    private String cardInfo;
 
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;

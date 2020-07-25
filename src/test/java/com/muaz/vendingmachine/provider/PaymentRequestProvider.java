@@ -16,4 +16,13 @@ public class PaymentRequestProvider {
                 .paymentType(PaymentType.BANKNOTE)
                 .build();
     }
+
+    public static PaymentRequest getMockCardPaymentRequest() {
+        return PaymentRequest.builder()
+                .offer(getMockOffer())
+                .cardInfo("4444-3333-2222-1111")
+                .money(BigDecimal.valueOf(20))
+                .paymentType(PaymentType.CARD)
+                .build();
+    }
 }
