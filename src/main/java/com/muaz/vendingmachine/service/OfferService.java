@@ -21,6 +21,8 @@ import static com.muaz.vendingmachine.enums.PaymentLogStatus.OFFER_START;
 @Slf4j
 public class OfferService {
 
+    public static final int REMAINING_LIMIT = 0;
+    public static final int SMALLER = -1;
     @Autowired
     private ProductRepository productRepository;
 
@@ -36,7 +38,7 @@ public class OfferService {
         int remainingCount = product.getCount() - offer.getCount();
         PaymentResponse paymentResponse = createPaymentResponse(paymentRequest, product);
 
-        if (remainingCount < 0) {
+        if (remainingCount < REMAINING_LIMIT) {
             log.info("status: {}, orderNumber: {} ", OFFER_FAIL, offerNumber);
             throw new NoSuchResourceFoundException("HIGH COUNT REQUESTED");
         }
@@ -55,7 +57,7 @@ public class OfferService {
 
     private boolean isNotAffordable(PaymentResponse paymentResponse) {
         if (isCash(paymentResponse.getPaymentType())) {
-            return paymentResponse.getRemainingPrice().compareTo(BigDecimal.ZERO) == -1;
+            return paymentResponse.getRemainingPrice().compareTo(BigDecimal.ZERO) == SMALLER;
         }
         return false;
 

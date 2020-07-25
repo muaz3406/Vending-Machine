@@ -35,6 +35,7 @@ public class PaymentService {
         if (offer == null) {
             throw new BadResourceRequestException("NO FOUND OFFER");
         }
+
         String offerNumber = offer.getOfferNumber();
         PaymentResponse paymentResponse = offerService.doOrder(paymentRequest, offerNumber);
 
