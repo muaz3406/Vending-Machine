@@ -6,6 +6,7 @@ import com.muaz.vendingmachine.enums.PaymentType;
 import com.muaz.vendingmachine.exception.NoSuchResourceFoundException;
 import com.muaz.vendingmachine.repository.PaymentResponseRepository;
 import com.muaz.vendingmachine.repository.ProductRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -36,23 +37,30 @@ public class OfferServiceTest {
     @Mock
     private PaymentResponseRepository paymentResponseRepository;
 
+    private PaymentResponse paymentResponse;
+    private Product product;
+
+    @Before
+    public void init() {
+        paymentResponse = getMockPaymentResponse();
+        product = getMockProduct();
+    }
+
     @Test(expected = NoSuchResourceFoundException.class)
     public void shouldThrowExWhenNotEnoughProduct() {
-        Product mockProduct = getMockProduct();
-        mockProduct.setCount(0);
+        product.setCount(0);
 
-        when(productRepository.findByProductNo(anyInt())).thenReturn(mockProduct);
+        when(productRepository.findByProductNo(anyInt())).thenReturn(product);
 
         offerService.doOffer(getMockCashPaymentRequest(), OFFER_NUMBER);
     }
 
     @Test(expected = NoSuchResourceFoundException.class)
     public void shouldThrowExceptionWhenNotEnoughMoney() {
-        PaymentResponse paymentResponse = getMockPaymentResponse();
         paymentResponse.setPaymentType(PaymentType.BANKNOTE);
         paymentResponse.setRemainingPrice(BigDecimal.valueOf(-10));
 
-        when(productRepository.findByProductNo(anyInt())).thenReturn(getMockProduct());
+        when(productRepository.findByProductNo(anyInt())).thenReturn(product);
         when(paymentResponseRepository.save(any(PaymentResponse.class))).thenReturn(paymentResponse);
 
         offerService.doOffer(getMockCashPaymentRequest(), OFFER_NUMBER);
@@ -60,8 +68,7 @@ public class OfferServiceTest {
 
     @Test
     public void shouldReturnPaymentResponseWhenSuccessfulOffer() {
-        PaymentResponse paymentResponse = getMockPaymentResponse();
-        when(productRepository.findByProductNo(anyInt())).thenReturn(getMockProduct());
+        when(productRepository.findByProductNo(anyInt())).thenReturn(product);
         when(paymentResponseRepository.save(any(PaymentResponse.class))).thenReturn(paymentResponse);
 
         PaymentResponse expectedPaymentResponse = offerService.doOffer(getMockCashPaymentRequest(), OFFER_NUMBER);

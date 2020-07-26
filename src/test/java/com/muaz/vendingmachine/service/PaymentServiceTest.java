@@ -5,6 +5,7 @@ import com.muaz.vendingmachine.entity.PaymentResponse;
 import com.muaz.vendingmachine.enums.PaymentType;
 import com.muaz.vendingmachine.exception.BadResourceRequestException;
 import com.muaz.vendingmachine.repository.PaymentRequestRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -36,20 +37,26 @@ public class PaymentServiceTest {
     @Mock
     private PaymentRequestRepository paymentRequestRepository;
 
+    private PaymentRequest paymentRequest;
+    private PaymentResponse paymentResponse;
+
+    @Before
+    public void init() {
+        paymentRequest = getMockCashPaymentRequest();
+        paymentResponse = getMockPaymentResponse();
+    }
+
     @Test(expected = BadResourceRequestException.class)
     public void shouldThrowExceptionWhenNodFoundOffer() {
-        PaymentRequest paymentRequest = getMockCashPaymentRequest();
         paymentRequest.setOffer(null);
-
         paymentService.doPay(paymentRequest);
     }
 
     @Test
     public void shouldPayWithCreditCardWhenRequestWithCreditCard() {
-        PaymentRequest paymentRequest = getMockCashPaymentRequest();
         paymentRequest.setPaymentType(PaymentType.CARD);
         String offerNumber = paymentRequest.getOffer().getOfferNumber();
-        when(offerService.doOffer(paymentRequest, offerNumber)).thenReturn(getMockPaymentResponse());
+        when(offerService.doOffer(paymentRequest, offerNumber)).thenReturn(paymentResponse);
 
         paymentService.doPay(paymentRequest);
 
@@ -58,9 +65,7 @@ public class PaymentServiceTest {
 
     @Test
     public void shouldPayWithCashWhenRequestedPaymentTypeWithCash() {
-        PaymentRequest paymentRequest = getMockCashPaymentRequest();
         String offerNumber = paymentRequest.getOffer().getOfferNumber();
-        PaymentResponse paymentResponse = getMockPaymentResponse();
         when(offerService.doOffer(paymentRequest, offerNumber)).thenReturn(paymentResponse);
 
         paymentService.doPay(paymentRequest);
@@ -70,14 +75,12 @@ public class PaymentServiceTest {
 
     @Test
     public void shouldReturnPaymentResponseWhenSuccessfulPayment() {
-        PaymentRequest paymentRequest = getMockCashPaymentRequest();
-        PaymentResponse paymentResponse = getMockPaymentResponse();
         when(offerService.doOffer(paymentRequest, paymentRequest.getOffer().getOfferNumber())).thenReturn(paymentResponse);
 
         PaymentResponse expectedPaymentResponse = paymentService.doPay(paymentRequest);
 
         verify(paymentRequestRepository).save(paymentRequest);
-        assertEquals(paymentResponse, expectedPaymentResponse);
+        assertEquals(expectedPaymentResponse, paymentResponse);
     }
 
 }
