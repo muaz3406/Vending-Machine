@@ -12,7 +12,7 @@ public class ProductProvider {
                 .productNo(55)
                 .name("banana")
                 .price(BigDecimal.TEN)
-                .productType(ProductType.SOLID)
+                .productType(ProductType.SOLID_FOOD)
                 .build();
     }
 }

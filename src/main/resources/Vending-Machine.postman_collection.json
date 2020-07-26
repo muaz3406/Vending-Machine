@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "bcf6dc97-31fc-4c2c-a054-86ff8495adb2",
+		"name": "Vending-Machine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "shouldPayWithRemoteCard",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":null,\"cardInfo\":\"444-333\",\"paymentType\":\"REMOTE_CARD\",\"money\":null,\"offer\":{\"id\":null,\"offerNumber\":\"aaa\",\"productNo\":34,\"count\":2,\"sugar\":3,\"paymentRequest\":null}}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/payment/doPay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"payment",
+						"doPay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shouldPayCard",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":null,\"cardInfo\":\"888-9999\",\"paymentType\":\"CARD\",\"money\":null,\"offer\":{\"id\":null,\"offerNumber\":\"aaa\",\"productNo\":34,\"count\":2,\"sugar\":3,\"paymentRequest\":null}}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/payment/doPay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"payment",
+						"doPay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shouldPayWithCoin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":null,\"cardInfo\":null,\"paymentType\":\"COIN\",\"money\":1.0,\"offer\":{\"id\":null,\"offerNumber\":\"aaa\",\"productNo\":12,\"count\":1,\"sugar\":null,\"paymentRequest\":null}}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/payment/doPay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"payment",
+						"doPay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shouldPayWithBanknote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":null,\"cardInfo\":null,\"paymentType\":\"BANKNOTE\",\"money\":20.0,\"offer\":{\"id\":null,\"offerNumber\":\"aaa\",\"productNo\":33,\"count\":3,\"sugar\":null,\"paymentRequest\":null}}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/payment/doPay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"payment",
+						"doPay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shouldThrowExceptionWhenNoResource",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":null,\"cardInfo\":null,\"paymentType\":\"COIN\",\"money\":20.0,\"offer\":{\"id\":null,\"offerNumber\":\"aaa\",\"productNo\":34,\"count\":200,\"sugar\":null,\"paymentRequest\":null}}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/payment/doPay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"payment",
+						"doPay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shouldThrowExceptionWhenBadRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":null,\"cardInfo\":null,\"paymentType\":\"CARD\",\"money\":null,\"offer\":{\"id\":null,\"offerNumber\":\"aaa\",\"productNo\":34,\"count\":1,\"sugar\":3,\"paymentRequest\":null}}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/payment/doPay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"payment",
+						"doPay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uploadProducts",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n   {\r\n      \"id\":1,\r\n      \"name\":\"Pringles Potato\",\r\n      \"price\":5.00,\r\n      \"productNo\":10,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":2,\r\n      \"name\":\"protein bar\",\r\n      \"price\":8.00,\r\n      \"productNo\":11,\r\n      \"count\":8,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":3,\r\n      \"name\":\"wafer\",\r\n      \"price\":0.50,\r\n      \"productNo\":12,\r\n      \"count\":10,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":4,\r\n      \"name\":\"banana\",\r\n      \"price\":4.00,\r\n      \"productNo\":13,\r\n      \"count\":4,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":5,\r\n      \"name\":\"Hormel Spaghetti\",\r\n      \"price\":5.00,\r\n      \"productNo\":14,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":6,\r\n      \"name\":\"Lay's Classic\",\r\n      \"price\":2.00,\r\n      \"productNo\":15,\r\n      \"count\":11,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":7,\r\n      \"name\":\"Lay's Wavy\",\r\n      \"price\":2.00,\r\n      \"productNo\":16,\r\n      \"count\":9,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":8,\r\n      \"name\":\"Oreo Sandwich\",\r\n      \"price\":6.00,\r\n      \"productNo\":17,\r\n      \"count\":7,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":9,\r\n      \"name\":\"Tiny Pretzel\",\r\n      \"price\":3.00,\r\n      \"productNo\":18,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":10,\r\n      \"name\":\"Marshmallows\",\r\n      \"price\":5.00,\r\n      \"productNo\":19,\r\n      \"count\":12,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":11,\r\n      \"name\":\"Cizi\",\r\n      \"price\":1.00,\r\n      \"productNo\":20,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":12,\r\n      \"name\":\"Peanut Oreo\",\r\n      \"price\":5.00,\r\n      \"productNo\":21,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":13,\r\n      \"name\":\"Doritos\",\r\n      \"price\":3.00,\r\n      \"productNo\":22,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":14,\r\n      \"name\":\"Nuts\",\r\n      \"price\":5.00,\r\n      \"productNo\":23,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":15,\r\n      \"name\":\"Ulker Cookies\",\r\n      \"price\":3.00,\r\n      \"productNo\":24,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":16,\r\n      \"name\":\"Eti Cookies\",\r\n      \"price\":3.00,\r\n      \"productNo\":25,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":17,\r\n      \"name\":\"Popcorn\",\r\n      \"price\":5.00,\r\n      \"productNo\":26,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n    {\r\n      \"id\":18,\r\n      \"name\":\"Chocolate Fudge\",\r\n      \"price\":4.00,\r\n      \"productNo\":27,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":19,\r\n      \"name\":\"Ulker Crackers\",\r\n      \"price\":2.00,\r\n      \"productNo\":28,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":20,\r\n      \"name\":\"Eti Crackers\",\r\n      \"price\":2.50,\r\n      \"productNo\":29,\r\n      \"count\":5,\r\n      \"productType\":\"SOLID_FOOD\"\r\n   },\r\n   {\r\n      \"id\":21,\r\n      \"name\":\"Caffe Americano\",\r\n      \"price\":7.00,\r\n      \"productNo\":30,\r\n      \"count\":15,\r\n      \"productType\":\"HOT_DRINK\"\r\n   },\r\n   {\r\n      \"id\":22,\r\n      \"name\":\"Latte\",\r\n      \"price\":5.00,\r\n      \"productNo\":31,\r\n      \"count\":15,\r\n      \"productType\":\"HOT_DRINK\"\r\n   },\r\n   {\r\n      \"id\":23,\r\n      \"name\":\"Cappuccino\",\r\n      \"price\":7.00,\r\n      \"productNo\":32,\r\n      \"count\":15,\r\n      \"productType\":\"HOT_DRINK\"\r\n   },\r\n   {\r\n      \"id\":24,\r\n      \"name\":\"Espresso\",\r\n      \"price\":5.00,\r\n      \"productNo\":33,\r\n      \"count\":15,\r\n      \"productType\":\"HOT_DRINK\"\r\n   },\r\n   {\r\n      \"id\":25,\r\n      \"name\":\"Macchiato\",\r\n      \"price\":12.00,\r\n      \"productNo\":34,\r\n      \"count\":15,\r\n      \"productType\":\"HOT_DRINK\"\r\n   },\r\n   {\r\n      \"id\":26,\r\n      \"name\":\"Diet Coke\",\r\n      \"price\":5.00,\r\n      \"productNo\":35,\r\n      \"count\":3,\r\n      \"productType\":\"COLD_DRINK\"\r\n   },\r\n   {\r\n      \"id\":27,\r\n      \"name\":\"Coke Zero\",\r\n      \"price\":5.00,\r\n      \"productNo\":36,\r\n      \"count\":8,\r\n      \"productType\":\"COLD_DRINK\"\r\n   },\r\n   {\r\n      \"id\":28,\r\n      \"name\":\"Sprite\",\r\n      \"price\":5.00,\r\n      \"productNo\":37,\r\n      \"count\":10,\r\n      \"productType\":\"COLD_DRINK\"\r\n   },\r\n   {\r\n      \"id\":29,\r\n      \"name\":\"Pepsi\",\r\n      \"price\":4.00,\r\n      \"productNo\":38,\r\n      \"count\":10,\r\n      \"productType\":\"COLD_DRINK\"\r\n   },\r\n   {\r\n      \"id\":30,\r\n      \"name\":\"Soda Water\",\r\n      \"price\":3.00,\r\n      \"productNo\":39,\r\n      \"count\":10,\r\n      \"productType\":\"COLD_DRINK\"\r\n   }\r\n\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product/uploadProducts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						"uploadProducts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllProducts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/product/getAllProducts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						"getAllProducts"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
