@@ -28,7 +28,7 @@ public class PaymentControllerTest {
     private PaymentService paymentService;
 
     @Test
-    public void doPay() throws Exception {
+    public void shouldPayWhenWhenValidRequest() throws Exception {
         PaymentRequest paymentRequest = getMockCardPaymentRequest();
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/payment/doPay")
