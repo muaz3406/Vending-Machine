@@ -18,6 +18,7 @@ public class ProductController {
     @RequestMapping(value = "/uploadProducts", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<Product> uploadProducts(@RequestBody List<Product> productList) {
+        productService.deleteAllProducts();
         return productService.uploadProducts(productList);
     }
 

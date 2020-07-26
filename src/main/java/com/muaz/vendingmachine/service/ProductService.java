@@ -17,6 +17,10 @@ public class ProductService {
         return (List<Product>) productRepository.saveAll(productList);
     }
 
+    public void deleteAllProducts() {
+        productRepository.deleteAll();
+    }
+
     public List<Product> getAllProducts() {
         return (List<Product>) productRepository.findAll();
     }

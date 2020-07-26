@@ -13,8 +13,7 @@ import java.util.List;
 
 import static com.muaz.vendingmachine.provider.ProductProvider.getMockProduct;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductServiceTest {
@@ -30,7 +29,13 @@ public class ProductServiceTest {
         List<Product> productList =Collections.singletonList(getMockProduct());
         productService.uploadProducts(productList);
 
-        verify(productRepository).saveAll(productList);
+        verify(productRepository, times(1)).saveAll(productList);
+    }
+
+    @Test
+    public void shouldDeleteAllWhenDeletingAllProducts() {
+        productService.deleteAllProducts();
+        verify(productRepository, times(1)).deleteAll();
     }
 
     @Test

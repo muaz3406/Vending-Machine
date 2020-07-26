@@ -20,8 +20,7 @@ import java.util.List;
 
 import static com.muaz.vendingmachine.provider.ProductProvider.getMockProduct;
 import static com.muaz.vendingmachine.utils.PaymentUtil.asJsonString;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 
 @RunWith(SpringRunner.class)
@@ -57,6 +56,7 @@ public class ProductControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
-        verify(productService).uploadProducts(productList);
+        verify(productService, times(1)).uploadProducts(productList);
+        verify(productService, times(1)).deleteAllProducts();
     }
 }
